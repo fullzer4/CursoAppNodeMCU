@@ -14,13 +14,38 @@ export default function App() {
 
   const envLedVm = () => {
     if(ledVm === false){
-      axios.get("endereço esp")
+      axios.get("endereço esp/onRed").then(response =>{
+        console.log("led vermelha ligada");
+        console.log(response);
+      })
     }
-  }
+    else{
+        axios.get("endereco esp/offRed").then(response => {
+          console.log("led vermelha desligada");
+          console.log(response);
+        })
+      }
+    }
+  
 
   const isSwitch2 = () =>{
     setLedVd(previousState => !previousState) //pegar o valor do state e botar o contrario dele false = true
   }
+
+  const envLedVd = () => {
+    if(ledVd === false){
+      axios.get("endereço esp/onGreen").then(response =>{
+        console.log("led verde ligada");
+        console.log(response);
+      })
+    }
+    else{
+        axios.get("endereco esp/offGreen").then(response => {
+          console.log("led verde desligada");
+          console.log(response);
+        })
+      }
+    }
 
   return (
     <>
@@ -30,12 +55,12 @@ export default function App() {
         <Text>Led Vermelho</Text>
         <View>
           <Text style={ledVm ? styles.ON : styles.OFF}> {ledVm ? "ligado" : "desligado"}</Text>
-          <Switch onValueChange={isSwitch} value={ledVm}></Switch>
+          <Switch onValueChange={isSwitch} value={ledVm} onChange={envLedVm}></Switch>
         </View>
         <Text>Led Verde</Text>
         <View>
           <Text style={ledVd ? styles.ON : styles.OFF}> {ledVd ? "ligado" : "desligado"}</Text>
-          <Switch onValueChange={isSwitch2} value={ledVd}></Switch>
+          <Switch onValueChange={isSwitch2} value={ledVd} onChange={envLedVd}></Switch>
         </View>
       </View>
       </ScrollView>
@@ -43,7 +68,6 @@ export default function App() {
     </>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
